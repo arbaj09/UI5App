@@ -1,0 +1,78 @@
+_schema-version: "3.2"
+ID: tutorial.myui5project
+version: 0.0.1
+build-parameters:
+  before-all:
+    - builder: custom
+      commands:
+        - npm install
+        - npm run build:workspaces
+modules:
+  - name: tutorial.myui5project-destination-content
+    type: com.sap.application.content
+    requires:
+      - name: tutorial.myui5project-auth
+      - name: tutorial.myui5project-html-repo-host
+      - name: tutorial.myui5project-destination-service
+        parameters:
+          content-target: true
+    parameters:
+      content:
+        instance:
+          existing_destinations_policy: update
+          destinations:
+            - Name: tutorial.myui5project-html-repo-host
+              ServiceInstanceName: tutorial.myui5project-html-repo-host
+              ServiceKeyName: tutorial.myui5project-html-repo-host-key
+              sap.cloud.service: basic.service
+            - Name: tutorial.myui5project-auth
+              ServiceInstanceName: tutorial.myui5project-auth
+              ServiceKeyName: tutorial.myui5project-auth-key
+              sap.cloud.service: basic.service
+              Authentication: OAuth2UserTokenExchange
+    build-parameters:
+      no-source: true
+  - name: tutorial.myui5project-ui-deployer
+    type: com.sap.application.content
+    path: .
+    requires:
+      - name: tutorial.myui5project-html-repo-host
+        parameters:
+          content-target: true
+    build-parameters:
+      build-result: resources
+      requires:
+        - artifacts:
+            - dist/myui5app-content.zip
+          name: myui5app
+          target-path: resources/
+  - name: myui5app
+    type: html5
+    path: myui5app
+    build-parameters:
+      supported-platforms: []
+resources:
+  - name: tutorial.myui5project-destination-service
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: destination
+      service-name: tutorial.myui5project-destination-service
+      service-plan: lite
+      config:
+        HTML5Runtime_enabled: true
+        version: 0.0.1
+  - name: tutorial.myui5project-html-repo-host
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: html5-apps-repo
+      service-plan: app-host
+      service-keys:
+        - name: tutorial.myui5project-html-repo-host-key
+  - name: tutorial.myui5project-auth
+    type: org.cloudfoundry.managed-service
+    parameters:
+      path: ./xs-security.json
+      service: xsuaa
+      service-plan: application
+      service-keys:
+        - name: tutorial.myui5project-auth-key
