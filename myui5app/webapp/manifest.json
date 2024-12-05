@@ -27,17 +27,28 @@
                     "icon": "sap-icon://add"
                 }
             }
+        },
+        "dataSources": {
+            "defaultDataSource": {
+                "uri": "/V2/Northwind/Northwind.svc/",
+                "type": "OData",
+                "settings": {
+                    "annotations": [],
+                    "localUri": "localService/metadata.xml",
+                    "odataVersion": "2.0"
+                }
+            }
         }
     },
     "sap.ui": {
         "technology": "UI5",
         "icons": {
-            "icon": "",
-            "favIcon": "",
-            "phone": "",
-            "phone@2": "",
-            "tablet": "",
-            "tablet@2": ""
+            "icon": "resources/icons/icon.png",
+            "favIcon": "resources/icons/favicon.ico",
+            "phone": "resources/icons/phone.png",
+            "phone@2": "resources/icons/phone@2.png",
+            "tablet": "resources/icons/tablet.png",
+            "tablet@2": "resources/icons/tablet@2.png"
         },
         "deviceTypes": {
             "desktop": true,
@@ -64,6 +75,11 @@
                 "settings": {
                     "bundleName": "myui5app.i18n.i18n"
                 }
+            },
+            "": {
+                "dataSource": "defaultDataSource",
+                "preload": true,
+                "settings": {}
             }
         },
         "resources": {
@@ -90,6 +106,13 @@
                     "target": [
                         "TargetMainView"
                     ]
+                },
+                {
+                    "name": "RouteProductDetail",
+                    "pattern": "productdetail/{productId}",
+                    "target": [
+                        "TargetProductDetail"
+                    ]
                 }
             ],
             "targets": {
@@ -97,8 +120,15 @@
                     "viewType": "XML",
                     "transition": "slide",
                     "clearControlAggregation": false,
-                    "viewId": "MainView",
-                    "viewName": "MainView"
+                    "viewId": "Products",
+                    "viewName": "Products"
+                },
+                "TargetProductDetail": {
+                    "viewType": "XML",
+                    "transition": "Slide",
+                    "clearControlAggregation": false,
+                    "viewId": "ProductDetail",
+                    "viewName": "ProductDetail"
                 }
             }
         },
