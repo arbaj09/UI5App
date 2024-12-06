@@ -113,6 +113,13 @@
                     "target": [
                         "TargetProductDetail"
                     ]
+                },
+                {
+                    "name": "RouteSales",
+                    "pattern": "sales",
+                    "target": [
+                        "TargetSales"
+                    ]
                 }
             ],
             "targets": {
@@ -129,6 +136,13 @@
                     "clearControlAggregation": false,
                     "viewId": "ProductDetail",
                     "viewName": "ProductDetail"
+                },
+                "TargetSales": {
+                    "viewType": "XML",
+                    "transition": "Slide",
+                    "clearControlAggregation": false,
+                    "viewId": "Sales",
+                    "viewName": "Sales"
                 }
             }
         },

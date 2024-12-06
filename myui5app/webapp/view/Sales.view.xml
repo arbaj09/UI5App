@@ -1,0 +1,73 @@
+ <mvc:View
+  controllerName="myui5app.controller.Sales"
+  displayBlock="true"
+  xmlns="sap.m"
+  xmlns:mvc="sap.ui.core.mvc"
+
+  xmlns:layout="sap.ui.layout"
+  xmlns:viz="sap.viz.ui5.controls"
+  xmlns:viz.data="sap.viz.ui5.data"
+  xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds">
+
+  <Page title="{i18n>title}" id="Sales" >
+    <content>
+      <layout:FixFlex id="chartFixFlex" minFlexSize="250">
+        <layout:flexContent> 
+           <viz:Popover id="idPopOver" connect="idVizFram"></viz:Popover>
+            <viz:VizFrame
+              id="idVizFrame"
+            
+              uiConfig="{applicationSet:'fiori'}"
+              height="100%"
+              width="100%"
+              vizType="timeseries_line"
+              vizProperties="{
+                                title: {
+                                    text: 'Sales by Years'
+                                },
+                                plotArea: {
+                                  dataLabel: {
+                                      visible: false
+                                  },
+                                  window: {
+                                      start: 'firstDataPoint',
+                                      end: 'lastDataPoint'
+                                  }
+                                }                                 
+                              }" >
+                <viz:dataset>
+                    <viz.data:FlattenedDataset id="sales" data="{/Summary_of_Sales_by_Years}">
+                        <viz.data:dimensions>
+                            <viz.data:DimensionDefinition
+                            id="sale"
+                            
+                              name="ShippedDate"
+                              value="{ShippedDate}"
+                              dataType="date"/>
+                        </viz.data:dimensions>
+                        <viz.data:measures>
+                            <viz.data:MeasureDefinition id="_IDGenMeasureDefinition"
+                            
+                              name="Subtotal"
+                              value="{Subtotal}"/>
+                        </viz.data:measures>
+                    </viz.data:FlattenedDataset>
+                </viz:dataset>
+                <viz:feeds>
+                    <viz.feeds:FeedItem
+                      id="valueAxisFeed"
+                      uid="valueAxis"
+                      type="Measure"
+                      values="Subtotal" />
+                    <viz.feeds:FeedItem
+                      id="timeAxisFeed"
+                      uid="timeAxis"
+                      type="Dimension"
+                      values="ShippedDate" />
+                </viz:feeds>
+            </viz:VizFrame>
+        </layout:flexContent>
+      </layout:FixFlex>
+    </content>
+  </Page>
+</mvc:View>
